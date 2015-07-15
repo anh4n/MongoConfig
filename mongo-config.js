@@ -7,11 +7,15 @@ MongoConfig = {
      */
     collectionName: 'config',
     /**
+     * @cfg {Mongo.Collection}
+     */
+    collection: null,
+    /**
      * @param {String} key
      * @param {String} value
      */
-    set: function (key, value) {
-        if (this.get(key)) {
+    setKey: function (key, value) {
+        if (this.getKey(key)) {
             Meteor.call("updateConfig", key, value);
         } else {
             Meteor.call("insertConfig", key, value);
@@ -19,21 +23,22 @@ MongoConfig = {
     },
     /**
      * @param {String} key
-     * @return {String|null}
+     * @param {Mixed} defaultValue
+     * @return {Mixed|null}
      */
-    get: function (key) {
+    getKey: function (key, defaultValue) {
         var cursor = this.collection.findOne({_id: key});
 
         if (cursor) {
             return cursor.value;
         } else {
-            return null;
+            return (defaultValue) ? defaultValue : null;
         }
     },
     /**
      * @param {String} key
      */
-    delete: function (key) {
+    deleteKey: function (key) {
         Meteor.call("removeConfig", key);
     }
 };
@@ -65,6 +70,10 @@ Meteor.methods({
         MongoConfig.collection.remove(key);
     }
 });
+
+if (Meteor.isClient) {
+    Meteor.subscribe(MongoConfig.collectionName);
+}
 
 if (Meteor.isServer) {
     Meteor.publish(MongoConfig.collectionName, function () {
