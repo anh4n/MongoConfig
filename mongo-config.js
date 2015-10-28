@@ -15,7 +15,7 @@ MongoConfig = {
      * @param {String} value
      */
     setKey: function (key, value) {
-        if (this.getKey(key)) {
+        if (this.getKey(key) !== undefined) {
             Meteor.call("updateConfig", key, value);
         } else {
             Meteor.call("insertConfig", key, value);
@@ -32,7 +32,7 @@ MongoConfig = {
         if (cursor) {
             return cursor.value;
         } else {
-            return (defaultValue) ? defaultValue : null;
+            return (defaultValue) ? defaultValue : undefined;
         }
     },
     /**

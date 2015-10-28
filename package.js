@@ -1,6 +1,6 @@
 Package.describe({
     name: 'invictus:mongo-config',
-    version: '1.0.0',
+    version: '1.0.1',
     summary: 'Simple Object to use MongoDb as Key-Value-Store in Meteor',
     git: 'https://github.com/Invictus1337/MongoConfig',
     documentation: 'README.md'
